@@ -1,0 +1,589 @@
+//ProLab2.java(ANA MAIN)
+
+------------------------------------------------------------------------
+
+package prolab2;
+
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class ProLab2 {
+
+    static sehirler sehir[] = new sehirler[81];
+    public static int[] enkisa_yol(int[][] komþu_maliyet, int baslangic) {   // baglangoç ile hangi þehirden baþlayacaðýný ve komþuluk maliyet matrisini enkisa_yol fonksiyonunda aldýk
+        int uzunluk = komþu_maliyet[0].length;
+        int[] mesafe = new int[uzunluk];
+        int[] en_kýsayol = new int[uzunluk];
+        boolean[] ugrandi_Mi = new boolean[uzunluk];
+
+        for (int i = 1; i < uzunluk; i++) {
+            en_kýsayol[i] = Integer.MAX_VALUE;                                     //hepsine en baþta verebileceðim kadar en büyük deðeri verip uðranmamýþ olarak iþaretledik
+            ugrandi_Mi[i] = false;
+        }
+        en_kýsayol[baslangic] = 0;                                                 // ve büyük deðer atadýktan sonra baþlangýç olarak referans aldýðým plakanýn dizisine 0 deðerini atadýk
+        int[] komsuluk_dizisi = new int[uzunluk];
+        komsuluk_dizisi[baslangic] = -1;                                           // fonksiyona hangi þehir gönderiliyorsa dizinin o indexine -1 deðeri atýyoruz
+
+        for (int i = 2; i < uzunluk; i++) {                                       // 2den baþlayarak uzunluk yani 82ye kadar for dönecek
+            int sehir_index =  -1;
+            int referans = Integer.MAX_VALUE;
+            for (int j = 1; j < uzunluk; j++) {
+                if (!ugrandi_Mi[j] && en_kýsayol[j] < referans) {                 // buradaki ifte uðranmamýþ olacak ve sonsuzdan deðerden daha küçük bir deðer arayana kadar kontrol edecek ardýndan sonsuz deðer deðiþtikten sonra en kýsa gidebilecek mesafeyi buluyor
+                    sehir_index = j;
+                    referans = en_kýsayol[j];
+                }
+            }
+
+            ugrandi_Mi[sehir_index] = true;
+
+            for (int k = 1; k < uzunluk; k++) {
+                int komsu_mesafe = komþu_maliyet[sehir_index][k];                //gelen þehir için komþu maliyet matrisinde komsu_mesafeye atama iþlemi yapýyoruz
+
+                if (komsu_mesafe > 0 && ((referans + komsu_mesafe) < en_kýsayol[k])) // eðer komþý_mesafe matisinden 0dan farklý yani komþusu ise kontrol ediliyor
+                {
+                    komsuluk_dizisi[k] = sehir_index;                              //fonksiyona ilk gelen þehirden komþusu olan diðer þehirlerin dizisini oluþturuyor
+                    en_kýsayol[k] = referans + komsu_mesafe;                        //fonksiyona ilk gelen þehirden komþusu olan diðer þehirlerin maliyetini oluþturuyor
+                }
+            }
+        }
+        for (int i = 1; i < 82; i++) {
+            mesafe[i] = komsuluk_dizisi[i];
+        }
+        return mesafe;
+    }
+
+    public static int[] maliyet(int[][] komþu_maliyet, int baslangic) {
+        int uzunluk = komþu_maliyet[0].length;
+        int[] mesafe = new int[uzunluk];
+        int[] en_kýsayol = new int[uzunluk];
+        boolean[] ugrandi_Mi = new boolean[uzunluk];
+
+        for (int i = 1; i < uzunluk; i++) {
+            en_kýsayol[i] = Integer.MAX_VALUE;                          //hepsine en baþta verebileceðim kadar en büyük deðeri verip uðranmamýþ olarak iþaretledik
+            ugrandi_Mi[i] = false;
+        }
+        en_kýsayol[baslangic] = 0;                                      // ve büyük deðer atadýktan sonra baþlangýç olarak referans aldýðým plakanýn dizisine 0 deðerini atadýk
+        int[] komsuluk_dizisi = new int[uzunluk];
+        komsuluk_dizisi[baslangic] =  -1;                               // fonksiyona hangi þehir gönderiliyorsa dizinin o indexine -1 deðeri atýyoruz
+
+        for (int i = 2; i < uzunluk; i++) {                            // 2den baþlayarak uzunluk yani 82ye kadar for dönecek
+            int sehir_index = -1;
+            int referans = Integer.MAX_VALUE;
+            for (int j = 1; j < uzunluk; j++) {
+                if (!ugrandi_Mi[j] && en_kýsayol[j] < referans) {   // buradaki ifte uðranmamýþ olacak ve sonsuzdan deðerden daha küçük bir deðer arayana kadar kontrol edecek ardýndan sonsuz deðer deðiþtikten sonra en kýsa gidebilecek mesafeyi buluyor
+                    sehir_index = j;
+                    referans = en_kýsayol[j];
+                }
+            }
+
+            ugrandi_Mi[sehir_index] = true;
+
+            for (int k = 1; k < uzunluk; k++) {
+                int komsu_mesafe = komþu_maliyet[sehir_index][k];                //gelen þehir için komþu maliyet matrisinde komsu_mesafeye atama iþlemi yapýyoruz
+
+                if (komsu_mesafe > 0 && ((referans + komsu_mesafe) < en_kýsayol[k])) // eðer komþý_mesafe matisinden 0dan farklý yani komþusu ise kontrol ediliyor
+                {
+                    komsuluk_dizisi[k] = sehir_index;                              //fonksiyona ilk gelen þehirden komþusu olan diðer þehirlerin dizisini oluþturuyor
+                    en_kýsayol[k] = referans + komsu_mesafe;                        //fonksiyona ilk gelen þehirden komþusu olan diðer þehirlerin maliyetini oluþturuyor
+                }
+            }
+        }
+        return en_kýsayol;
+    }
+
+    static int faktoriyel(int sayi) {
+        int carpim = 1;
+        for (int i = 1; i <= sayi; i++) {
+            carpim *= i;
+        }
+        return carpim;
+    }
+
+    static int plaka_bul(String s) {
+        int p = 0;
+        for (p = 0; p < 81; p++) {
+
+            if (sehir[p].sehir_adi.equals(s)) {
+                break;
+            }
+        }
+        return sehir[p].plaka_kodu;
+    }
+    public static void main(String[] args) {
+        Point[] points = new Point[82];
+        String line;
+        String[] bol;
+        int[] plaka;
+        int temp, sayac = 0;
+        int i = 0, k = 0;
+        int[][] komsu_maliyet = new int[82][82];
+        String path = System.getProperty("user.dir") + "\\Koordinatlar.txt";
+        try {
+            FileReader dosya2 = new FileReader(path);
+            BufferedReader oku1 = new BufferedReader(dosya2);
+            i = 1;
+            while (oku1.ready()) {
+                String[] split = oku1.readLine().split(",");
+                int x = Integer.parseInt(split[0]);
+                int y = Integer.parseInt(split[1]);
+                points[i++] = new Point(x, y);
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        i = 0;
+        try {
+            String path1 = System.getProperty("user.dir") + "/sehirler.txt";
+            FileReader dosya = new FileReader(path1);
+            BufferedReader oku = new BufferedReader(dosya);
+            line = oku.readLine();
+            while (line != null) {
+                bol = line.split(",");
+                sehir[i] = new sehirler(bol.length - 2);                          // Þehir adýnda yeni bir class oluþturduk ve oluþturduðumuz anda classýn parametreli constructorýna komsu sayýsýný attýk
+                sehir[i].sehir_adi = bol[1];                                      // okuduðuz text þehrin adýný classtaki þehrin adýna yazdým
+                sehir[i].plaka_kodu = Integer.parseInt(bol[0]);                  // ayný þekilde plakasýný da
+                for (int j = 2; j < bol.length; j++) {
+                    sehir[i].komsu[k] = bol[j];                                  // bu adýmda ise atanan þehrin komþularýnýn isimlerini tuttuk
+                    k++;
+                }
+                k = 0;
+                i++;
+                line = oku.readLine();
+            }
+
+        dosya.close();
+        } catch (IOException e) {
+            System.out.println("dosya bulunamadi");
+        }
+        try {
+            String path2 = System.getProperty("user.dir") + "/mesafeler.txt";
+            FileReader dosya1 = new FileReader(path2);
+            BufferedReader oku = new BufferedReader(dosya1);
+            line = oku.readLine();
+            while (line != null) {
+                bol = line.split(",");
+                for (i = 0; i < sehir[sayac].komsu.length; i++) {                 // for 81 þehir için tuttuðumuz komsu sayýsýna dönerek maliyetlerini þehir classýndaki maliyetlerine atarak her þehir için özdeþleþtirdik
+
+                    sehir[sayac].komsu_maliyet[i] = Integer.parseInt(bol[i + 1]);
+
+                }
+                sayac++;
+                line = oku.readLine();
+            }
+        dosya1.close();
+        } catch (IOException e) {
+            System.out.println("dosya bulunamadi");
+        }
+
+        for (i = 0; i < 81; i++) {
+            for (int l = 0; l < sehir[i].komsu.length; l++) {
+                temp = plaka_bul(sehir[i].komsu[l]);                              // bu adýmda plaka_bul fonksiyonu yaparak komþu þehirlerin plakasýný aldýk
+                komsu_maliyet[i + 1][temp] = sehir[i].komsu_maliyet[l];          //aldýðýz plakalarý komþu matris yaparak onlara atadým
+            }
+        }
+        sayac = 0;
+        Random r = new Random();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("kac adet sehir gireceksiniz(MAX 8 þehirde çalýþýr)");
+        int sehir_sayisi = scan.nextInt() + 1;
+        int[] sehirler = new int[sehir_sayisi + 1];
+        int[][] komsu_dizi = new int[sehir_sayisi + 1][82];
+        int[] en_kisayol = new int[82];
+        int sayac1 = 0;
+        int[] dizi = new int[82];
+        int[][] maliyet = new int[sehir_sayisi + 1][82];
+        System.out.println("Sehirlerin plaka kodlarýný giriniz(Kocaeli baþlangýç þehir olarak belirlenmiþtir.Girilmesine gerek yoktur):");
+        sehirler[1] = 41;
+        for (i = 2; i <= sehir_sayisi; i++) {
+            sehirler[i] = scan.nextInt();
+        }
+        System.out.println();
+        for (int kl = 1; kl <= sehir_sayisi; kl++) {
+            en_kisayol = enkisa_yol(komsu_maliyet, sehirler[kl]);                        // enkisa_yol fonksiyona þehirleri göndererek onlarýn hangi þehire komþu olduklarýný dizi deðiþkene atayýp 3 alt satýrda o dönen diziyi komsu_dizisine atýyoruz
+
+            dizi = maliyet(komsu_maliyet, sehirler[kl]);                         // maliyet fonksiyonnuna gönderilen þehirlerin diðer þehirlere olan mesafelerini tutuyor bir alt satýrda da maliyet dizisine kopyalýyoruz
+            System.arraycopy(dizi, 0, maliyet[kl], 0, 82);
+            System.arraycopy(en_kisayol, 0, komsu_dizi[kl], 0, 82);
+
+        }
+        int j = 1;
+        Point[] point = new Point[sehir_sayisi + 1];                             // x ve y noktalarýný tutacak bir point nesnesi tanýmladýk
+        String rakamlar = "";
+        int[] degisken = new int[faktoriyel(sehir_sayisi)];
+        int[] gezilecek_sehir = new int[11];
+        int sehir_syisi = sehir_sayisi;
+        int sayi_tut;
+        Harita hm = new Harita();
+        int dizi_indx = 0, sayi = 0;
+        List<Integer>[] array;
+        array = new List[faktoriyel(sehir_sayisi)];
+        for (int l = 0; l < faktoriyel(sehir_sayisi); l++) {
+            array[l] = new ArrayList<Integer>();
+        }
+        long start = System.currentTimeMillis();
+        int abs;
+        if (sehir_sayisi == 9) {
+            abs = 123456789;
+        } else {
+            abs = (int) Math.pow(10, sehir_sayisi - 1);
+        }
+        for (i = abs; i < (int) Math.pow(10, sehir_sayisi - 1) * 2; i++) {
+            String string = "";
+            string += i;                                                                                             // for da artan i deðerini her seferinde string deðiþkenine ekliyoruz
+            char[] sirala = string.toCharArray();
+            Arrays.sort(sirala);                                                                                   // diziye çevrilmiþ olan String burda sýralýyoruz 15342 gibi sayýyý 12345 olarak sýralayýp aþaðýda referans olarak verdiðim deðerle karþýlaþtýrýyoruz hepsi birbirinden farklý mý diye 
+            for (j = 1; j <= sehir_sayisi; j++) {
+                rakamlar += j;                                                                                     // bu kýsýmda kullanici kaç þehir girdi ise ona göre rakamlarý alýyoruz karþýlaþtýrma yaparken referans olarak
+            }                                                                                                     //örnek veriyorum kullanýcý 5 tane þehir girecekse 12345 sayýlarýný alýyoruz
+            if (String.valueOf(sirala).equals(rakamlar)) {                                                        // karþýlaþtýrma yapýlýyor
+                sayi_tut = i;
+                while (0 < i) {
+                    gezilecek_sehir[sehir_syisi] = i % 10;                                                        // burda eðer þart saðlanýr bütün sayýlar birbinden farklý oluyorsa o sayýlarýn modunu alarak gezilecek þehirlere aktarýyoruz
+                    i = i / 10;
+                    sehir_syisi--;
+                }
+                int sehir_plaka;
+                for (i = 1; i < sehir_sayisi; i++) {
+                    sehir_plaka = sehirler[gezilecek_sehir[i]];                                                  //kullanýcýdan aldýðýz þehirlerin plakalarýný sehir_plaka deðiþkenine atýyoruz yukarý da kontrol iþleminde doðru olanlarý yani 15234 þartý saðlýyorsa ilk önce 1 sonra 5 diye alýyoruz
+                    do {
+
+                        if (sehir_plaka != -1) {
+                            array[dizi_indx].add(sehir_plaka);                                                   //eðer plaka -1 deðil ise arraylist e atýyoruz ilk plakayý
+                        }
+
+                        sehir_plaka = komsu_dizi[gezilecek_sehir[i + 1]][sehir_plaka];                           // yukarý da oluþturduðumuz komþu dizisinde gezilecek þehir i+1 diyerek olasý kombinasyonlar da kocaelinden sonra hangi geliyorsa onu þehir plakasýna atýyoruz örnek vermek gerekirse ilkten kocaelinden adanaya gidilecek o yollarý arraylist e atýyorum
+                                                                                                                 //komsu_dizi[1][41]=54 eþit kocaelinin komþusu olduðu için ardýndan komsu_dizi[1][54]=14 gibi böyle devam ediyor komsu_dizi[1][1] olduðu vakit -1 dönüp çýkýyor 
+                    } while (sehir_plaka != -1);
+                    degisken[dizi_indx] += maliyet[gezilecek_sehir[i]][sehirler[gezilecek_sehir[i + 1]]];         //bu sýrada da maliyetleri toplayýp bütün olasý maliyetleri atýyorum deðiþken dizisine kullanýcý 5 þehir girdiyse 120 farklý maliyet barýndýrýyor
+                }
+                sehir_plaka = sehirler[gezilecek_sehir[i]];                                                       // gittiðim en son yerdeki plakayý alýyoruz ve sehir_plaka da tutuyoruz kocaelinden->adana->afyon gitti afyonun plakasýný burda tutuyoruz
+                do {
+
+                    if (sehir_plaka != -1) {
+                        array[dizi_indx].add(sehir_plaka);
+                    }
+                    sehir_plaka = komsu_dizi[gezilecek_sehir[1]][sehir_plaka];                                   //burda örnek verdiðim o afyonun plakasýný matrisin sütun kýsmýna yazýyoruz gezilecek þehir de kocaelini tuttuðu için en son ki birleþtirme yani afyondan kocaeline olan yolu da bu kýsýmda yazýyor
+
+                } while (sehir_plaka != -1);
+                degisken[dizi_indx] += maliyet[gezilecek_sehir[i]][41];                   //son olarak afyondan kocaeline olan maliyete de ekliyoruz
+                dizi_indx++;
+                i = sayi_tut;
+            }                                                                             //deðiþkenler bir sonraki for için hazýr olsun diye baþlangýçtaki deðerleri veriyoruz
+
+            rakamlar = "";
+            sehir_syisi = sehir_sayisi;
+        }
+        File dosya_1 = new File("Output.txt");
+        ArrayList<Integer> buffer = new ArrayList<Integer>();
+        for (i = 0; i < faktoriyel(sehir_sayisi - 1) - 1; i++) {                          //yukarýda almýþ olduðuz kullanýcý 5 tane þehir girdiyse o þehirlerin maliyetlerini küçükten büyüðe doðru sýralama iþlemi yapýyoruz
+            for (j = i + 1; j < faktoriyel(sehir_sayisi - 1); j++) {
+                if (degisken[i] > degisken[j]) {
+                    int tmp3 = degisken[i];
+                    degisken[i] = degisken[j];                                             //burada maliyetleri sýralarken
+                    degisken[j] = tmp3;
+                    buffer = (ArrayList<Integer>) array[i];                               // bu kýsýmda ise yollarý sýralýyor maliyetlerle ayný þekilde ilerlesin diye
+                    array[i] = array[j];
+                    array[j] = buffer;
+                }
+            }
+
+        }
+        long end = System.currentTimeMillis();
+        long cikan_sonuc=end-start;
+        System.out.println("Algoritanýn tamamlanma süresi: "+(double)cikan_sonuc/1000);
+        System.out.println("\n\n");
+        Point[][] nokta = new Point[5][sehir_sayisi + 1];                                  //harita da çizeceðiz noktalar için yeni bir point nesnesi oluþturuyoruz
+        if (sehir_sayisi <= 2) {
+            try {
+                FileWriter dosya_yaz = new FileWriter(dosya_1);
+                BufferedWriter writer = new BufferedWriter(dosya_yaz);
+
+                for (i = 0; i < 1; i++) {
+                    writer.write("(En Kýsa Yol: ");
+                    writer.write(String.valueOf(degisken[i]));
+                    writer.write(")");
+                    System.out.print("(En Kýsa Yol: " + degisken[i] + ")");
+                    for (j = 0; j < array[i].size(); j++) {                             //bu kýsýmda ise yazma iþlemini hem dosyaya hemde ekrana yazdýrýyorum maliyetleriyle birlikte
+                        writer.write(String.valueOf(array[i].get(j)));
+                        writer.write("  ");
+                        System.out.print(" " + array[i].get(j));
+                    }
+                    writer.write("\n");
+                    System.out.println("");
+                }
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Dosya yazma iþlemi baþarýsýz  " + e);
+            }
+        } else if (sehir_sayisi == 3) {
+            try {
+                FileWriter dosya_yaz = new FileWriter(dosya_1);
+                BufferedWriter writer = new BufferedWriter(dosya_yaz);
+
+                for (i = 0; i < 2; i++) {
+                    writer.write("(En Kýsa Yol: ");
+                    writer.write(String.valueOf(degisken[i]));
+                    writer.write(")");
+                    System.out.print("(En Kýsa Yol: " + degisken[i] + ")");
+                    for (j = 0; j < array[i].size(); j++) {                             //bu kýsýmda ise yazma iþlemini hem dosyaya hemde ekrana yazdýrýyorum maliyetleriyle birlikte
+                        writer.write(String.valueOf(array[i].get(j)));
+                        writer.write("  ");
+                        System.out.print(" " + array[i].get(j));
+                    }
+                    writer.write("\n");
+                    System.out.println("");
+                }
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Dosya yazma iþlemi baþarýsýz  " + e);
+            }
+        } else {
+            try {
+                FileWriter dosya_yaz = new FileWriter(dosya_1);
+                BufferedWriter writer = new BufferedWriter(dosya_yaz);
+
+                for (i = 0; i < 5; i++) {
+                    writer.write("(En Kýsa Yol: ");
+                    writer.write(String.valueOf(degisken[i]));
+                    writer.write(")");
+                    System.out.print("(En Kýsa Yol: " + degisken[i] + ")");
+                    for (j = 0; j < array[i].size(); j++) {                             //bu kýsýmda ise yazma iþlemini hem dosyaya hemde ekrana yazdýrýyorum maliyetleriyle birlikte
+                        writer.write(String.valueOf(array[i].get(j)));
+                        writer.write("  ");
+                        System.out.print(" " + array[i].get(j));
+                    }
+                    writer.write("\n");
+                    System.out.println("");
+                }
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Dosya yazma iþlemi baþarýsýz  " + e);
+            }
+        }
+
+        if (sehir_sayisi <= 3) {
+            for (i = 0; i < sehir_sayisi - 1; i++) {
+                sayi = 0;
+
+                nokta[i][0] = new Point(points[41].x, points[41].y);
+                for (j = 0; j < array[i].size() - 1; j++) {
+                    if (array[i].get(j) == array[i].get(j + 1)) //5 tane yol içinde dolaþýyorum bir þehire gelip o þehirden çýkarken plakasýný 2 kere tekrar edene bakýyorum yani o þehre uðranmýþ mý diye referans alýyorum
+                    {
+                        sayi++;
+                        nokta[0][sayi] = new Point(points[array[i].get(j)].x, points[array[i].get(j)].y);          //eðer o þehre uðrandýysa kendim oluþturduðum koordinatlar txtden okuduðum koordinatlarý noktalar deðiþkenine atýyorum             
+                    }
+                }
+                nokta[0][++sayi] = new Point(points[41].x, points[41].y);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
+                hm.nokta(nokta, 1, sehir_sayisi + 1);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
+                hm.run();
+
+                System.out.println("");
+            }
+
+        } else {
+            sayi = 0;
+            nokta[0][0] = new Point(points[41].x, points[41].y);
+            for (j = 0; j < array[0].size() - 1; j++) {
+                if (array[0].get(j) == array[0].get(j + 1)) //5 tane yol içinde dolaþýyorum bir þehire gelip o þehirden çýkarken plakasýný 2 kere tekrar edene bakýyorum yani o þehre uðranmýþ mý diye referans alýyorum
+                {
+
+                    sayi++;
+                    nokta[0][sayi] = new Point(points[array[0].get(j)].x, points[array[0].get(j)].y);          //eðer o þehre uðrandýysa kendim oluþturduðum koordinatlar txtden okuduðum koordinatlarý noktalar deðiþkenine atýyorum
+
+                }
+            }
+            nokta[0][++sayi] = new Point(points[41].x, points[41].y);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            hm.nokta(nokta, 1, sehir_sayisi + 1);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            hm.run();
+
+            System.out.println("");
+            sayac = 0;
+            for (i = 1; i < 5; i++) {
+                sayi = 0;
+                nokta[sayac][0] = new Point(points[41].x, points[41].y);
+                for (j = 0; j < array[i].size() - 1; j++) {
+                    if (array[i].get(j) == array[i].get(j + 1)) //5 tane yol içinde dolaþýyorum bir þehire gelip o þehirden çýkarken plakasýný 2 kere tekrar edene bakýyorum yani o þehre uðranmýþ mý diye referans alýyorum
+                    {
+                        sayi++;
+                        nokta[sayac][sayi] = new Point(points[array[i].get(j)].x, points[array[i].get(j)].y);          //eðer o þehre uðrandýysa kendim oluþturduðum koordinatlar txtden okuduðum koordinatlarý noktalar deðiþkenine atýyorum
+
+                    }
+                }
+                sayac++;
+                nokta[sayac][++sayi] = new Point(points[41].x, points[41].y);
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            hm.nokta(nokta, 4, sehir_sayisi + 1);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            hm.run();
+        }
+
+    }
+
+}
+
+------------------------------------------------------------------------
+
+//Harita.java Jframe oluþturulan class
+
+
+package prolab2;
+
+
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Point;
+
+
+public class Harita extends javax.swing.JFrame {
+
+    public static Point[][] points;
+    public static int degisken = 0;
+    public static int N_satir;
+    public Harita() {
+         initComponents();
+
+    }
+    public static void nokta(Point point[][], int satir,int sutun) {
+        N_satir=satir;
+        points = new Point[satir][sutun];
+        for(int j=0;j<satir;j++)
+        {
+            for (int i = 0; i < sutun; i++) {
+           points[j][i] = new Point(point[j][i].x, point[j][i].y);
+        }
+        }      
+        degisken = sutun;      
+    }
+
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        popupMenu1 = new java.awt.PopupMenu();
+        popupMenu2 = new java.awt.PopupMenu();
+        jLabel2 = new javax.swing.JLabel();
+
+        popupMenu1.setLabel("popupMenu1");
+
+        popupMenu2.setLabel("popupMenu2");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/prolab2/4lturkiye-siyasi-haritasi2.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1004, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel2)
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {                                     
+
+    }                                    
+    @Override
+    public void paint(Graphics g) {
+        super.paintComponents(g);
+        if(N_satir==1)
+            g.setColor(Color.RED);
+        else
+            g.setColor(Color.BLACK);
+        for(int j=0;j<N_satir;j++)
+        {
+             for (int i = 0; i < degisken-1; i++) {
+
+            g.drawLine(points[j][i].x, points[j][i].y, points[j][i + 1].x, points[j][i + 1].y);
+           
+        }
+        }
+       
+
+    }
+
+   
+    public void run() {
+        new Harita().setVisible(true);
+
+    }
+    // Variables declaration - do not modify                     
+    private javax.swing.JLabel jLabel2;
+    private java.awt.PopupMenu popupMenu1;
+    private java.awt.PopupMenu popupMenu2;
+    // End of variables declaration                   
+}
+
+
+------------------------------------------------------------------------
+
+//sehirler.java sehirler classý
+package prolab2;
+
+
+public class sehirler {
+    String sehir_adi;
+    int plaka_kodu;
+    String [] komsu;
+    int [] komsu_maliyet;
+      public sehirler()
+    {
+        
+    }
+    public sehirler(int degisken)
+    {
+      komsu=new String[degisken];
+      komsu_maliyet=new int[degisken];
+    }
+    
+}
+
+
+
