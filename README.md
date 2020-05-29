@@ -21,39 +21,39 @@ import java.util.Scanner;
 public class ProLab2 {
 
     static sehirler sehir[] = new sehirler[81];
-    public static int[] enkisa_yol(int[][] komşu_maliyet, int baslangic) {   // baglangoç ile hangi şehirden başlayacağını ve komşuluk maliyet matrisini enkisa_yol fonksiyonunda aldık
-        int uzunluk = komşu_maliyet[0].length;
+    public static int[] enkisa_yol(int[][] komÅŸu_maliyet, int baslangic) {   // baglangoÃ§ ile hangi ÅŸehirden baÅŸlayacaÄŸÄ±nÄ± ve komÅŸuluk maliyet matrisini enkisa_yol fonksiyonunda aldÄ±k
+        int uzunluk = komÅŸu_maliyet[0].length;
         int[] mesafe = new int[uzunluk];
-        int[] en_kısayol = new int[uzunluk];
+        int[] en_kÄ±sayol = new int[uzunluk];
         boolean[] ugrandi_Mi = new boolean[uzunluk];
 
         for (int i = 1; i < uzunluk; i++) {
-            en_kısayol[i] = Integer.MAX_VALUE;                                     //hepsine en başta verebileceğim kadar en büyük değeri verip uğranmamış olarak işaretledik
+            en_kÄ±sayol[i] = Integer.MAX_VALUE;                                     //hepsine en baÅŸta verebileceÄŸim kadar en bÃ¼yÃ¼k deÄŸeri verip uÄŸranmamÄ±ÅŸ olarak iÅŸaretledik
             ugrandi_Mi[i] = false;
         }
-        en_kısayol[baslangic] = 0;                                                 // ve büyük değer atadıktan sonra başlangıç olarak referans aldığım plakanın dizisine 0 değerini atadık
+        en_kÄ±sayol[baslangic] = 0;                                                 // ve bÃ¼yÃ¼k deÄŸer atadÄ±ktan sonra baÅŸlangÄ±Ã§ olarak referans aldÄ±ÄŸÄ±m plakanÄ±n dizisine 0 deÄŸerini atadÄ±k
         int[] komsuluk_dizisi = new int[uzunluk];
-        komsuluk_dizisi[baslangic] = -1;                                           // fonksiyona hangi şehir gönderiliyorsa dizinin o indexine -1 değeri atıyoruz
+        komsuluk_dizisi[baslangic] = -1;                                           // fonksiyona hangi ÅŸehir gÃ¶nderiliyorsa dizinin o indexine -1 deÄŸeri atÄ±yoruz
 
-        for (int i = 2; i < uzunluk; i++) {                                       // 2den başlayarak uzunluk yani 82ye kadar for dönecek
+        for (int i = 2; i < uzunluk; i++) {                                       // 2den baÅŸlayarak uzunluk yani 82ye kadar for dÃ¶necek
             int sehir_index =  -1;
             int referans = Integer.MAX_VALUE;
             for (int j = 1; j < uzunluk; j++) {
-                if (!ugrandi_Mi[j] && en_kısayol[j] < referans) {                 // buradaki ifte uğranmamış olacak ve sonsuzdan değerden daha küçük bir değer arayana kadar kontrol edecek ardından sonsuz değer değiştikten sonra en kısa gidebilecek mesafeyi buluyor
+                if (!ugrandi_Mi[j] && en_kÄ±sayol[j] < referans) {                 // buradaki ifte uÄŸranmamÄ±ÅŸ olacak ve sonsuzdan deÄŸerden daha kÃ¼Ã§Ã¼k bir deÄŸer arayana kadar kontrol edecek ardÄ±ndan sonsuz deÄŸer deÄŸiÅŸtikten sonra en kÄ±sa gidebilecek mesafeyi buluyor
                     sehir_index = j;
-                    referans = en_kısayol[j];
+                    referans = en_kÄ±sayol[j];
                 }
             }
 
             ugrandi_Mi[sehir_index] = true;
 
             for (int k = 1; k < uzunluk; k++) {
-                int komsu_mesafe = komşu_maliyet[sehir_index][k];                //gelen şehir için komşu maliyet matrisinde komsu_mesafeye atama işlemi yapıyoruz
+                int komsu_mesafe = komÅŸu_maliyet[sehir_index][k];                //gelen ÅŸehir iÃ§in komÅŸu maliyet matrisinde komsu_mesafeye atama iÅŸlemi yapÄ±yoruz
 
-                if (komsu_mesafe > 0 && ((referans + komsu_mesafe) < en_kısayol[k])) // eğer komşı_mesafe matisinden 0dan farklı yani komşusu ise kontrol ediliyor
+                if (komsu_mesafe > 0 && ((referans + komsu_mesafe) < en_kÄ±sayol[k])) // eÄŸer komÅŸÄ±_mesafe matisinden 0dan farklÄ± yani komÅŸusu ise kontrol ediliyor
                 {
-                    komsuluk_dizisi[k] = sehir_index;                              //fonksiyona ilk gelen şehirden komşusu olan diğer şehirlerin dizisini oluşturuyor
-                    en_kısayol[k] = referans + komsu_mesafe;                        //fonksiyona ilk gelen şehirden komşusu olan diğer şehirlerin maliyetini oluşturuyor
+                    komsuluk_dizisi[k] = sehir_index;                              //fonksiyona ilk gelen ÅŸehirden komÅŸusu olan diÄŸer ÅŸehirlerin dizisini oluÅŸturuyor
+                    en_kÄ±sayol[k] = referans + komsu_mesafe;                        //fonksiyona ilk gelen ÅŸehirden komÅŸusu olan diÄŸer ÅŸehirlerin maliyetini oluÅŸturuyor
                 }
             }
         }
@@ -63,43 +63,43 @@ public class ProLab2 {
         return mesafe;
     }
 
-    public static int[] maliyet(int[][] komşu_maliyet, int baslangic) {
-        int uzunluk = komşu_maliyet[0].length;
+    public static int[] maliyet(int[][] komÅŸu_maliyet, int baslangic) {
+        int uzunluk = komÅŸu_maliyet[0].length;
         int[] mesafe = new int[uzunluk];
-        int[] en_kısayol = new int[uzunluk];
+        int[] en_kÄ±sayol = new int[uzunluk];
         boolean[] ugrandi_Mi = new boolean[uzunluk];
 
         for (int i = 1; i < uzunluk; i++) {
-            en_kısayol[i] = Integer.MAX_VALUE;                          //hepsine en başta verebileceğim kadar en büyük değeri verip uğranmamış olarak işaretledik
+            en_kÄ±sayol[i] = Integer.MAX_VALUE;                          //hepsine en baÅŸta verebileceÄŸim kadar en bÃ¼yÃ¼k deÄŸeri verip uÄŸranmamÄ±ÅŸ olarak iÅŸaretledik
             ugrandi_Mi[i] = false;
         }
-        en_kısayol[baslangic] = 0;                                      // ve büyük değer atadıktan sonra başlangıç olarak referans aldığım plakanın dizisine 0 değerini atadık
+        en_kÄ±sayol[baslangic] = 0;                                      // ve bÃ¼yÃ¼k deÄŸer atadÄ±ktan sonra baÅŸlangÄ±Ã§ olarak referans aldÄ±ÄŸÄ±m plakanÄ±n dizisine 0 deÄŸerini atadÄ±k
         int[] komsuluk_dizisi = new int[uzunluk];
-        komsuluk_dizisi[baslangic] =  -1;                               // fonksiyona hangi şehir gönderiliyorsa dizinin o indexine -1 değeri atıyoruz
+        komsuluk_dizisi[baslangic] =  -1;                               // fonksiyona hangi ÅŸehir gÃ¶nderiliyorsa dizinin o indexine -1 deÄŸeri atÄ±yoruz
 
-        for (int i = 2; i < uzunluk; i++) {                            // 2den başlayarak uzunluk yani 82ye kadar for dönecek
+        for (int i = 2; i < uzunluk; i++) {                            // 2den baÅŸlayarak uzunluk yani 82ye kadar for dÃ¶necek
             int sehir_index = -1;
             int referans = Integer.MAX_VALUE;
             for (int j = 1; j < uzunluk; j++) {
-                if (!ugrandi_Mi[j] && en_kısayol[j] < referans) {   // buradaki ifte uğranmamış olacak ve sonsuzdan değerden daha küçük bir değer arayana kadar kontrol edecek ardından sonsuz değer değiştikten sonra en kısa gidebilecek mesafeyi buluyor
+                if (!ugrandi_Mi[j] && en_kÄ±sayol[j] < referans) {   // buradaki ifte uÄŸranmamÄ±ÅŸ olacak ve sonsuzdan deÄŸerden daha kÃ¼Ã§Ã¼k bir deÄŸer arayana kadar kontrol edecek ardÄ±ndan sonsuz deÄŸer deÄŸiÅŸtikten sonra en kÄ±sa gidebilecek mesafeyi buluyor
                     sehir_index = j;
-                    referans = en_kısayol[j];
+                    referans = en_kÄ±sayol[j];
                 }
             }
 
             ugrandi_Mi[sehir_index] = true;
 
             for (int k = 1; k < uzunluk; k++) {
-                int komsu_mesafe = komşu_maliyet[sehir_index][k];                //gelen şehir için komşu maliyet matrisinde komsu_mesafeye atama işlemi yapıyoruz
+                int komsu_mesafe = komÅŸu_maliyet[sehir_index][k];                //gelen ÅŸehir iÃ§in komÅŸu maliyet matrisinde komsu_mesafeye atama iÅŸlemi yapÄ±yoruz
 
-                if (komsu_mesafe > 0 && ((referans + komsu_mesafe) < en_kısayol[k])) // eğer komşı_mesafe matisinden 0dan farklı yani komşusu ise kontrol ediliyor
+                if (komsu_mesafe > 0 && ((referans + komsu_mesafe) < en_kÄ±sayol[k])) // eÄŸer komÅŸÄ±_mesafe matisinden 0dan farklÄ± yani komÅŸusu ise kontrol ediliyor
                 {
-                    komsuluk_dizisi[k] = sehir_index;                              //fonksiyona ilk gelen şehirden komşusu olan diğer şehirlerin dizisini oluşturuyor
-                    en_kısayol[k] = referans + komsu_mesafe;                        //fonksiyona ilk gelen şehirden komşusu olan diğer şehirlerin maliyetini oluşturuyor
+                    komsuluk_dizisi[k] = sehir_index;                              //fonksiyona ilk gelen ÅŸehirden komÅŸusu olan diÄŸer ÅŸehirlerin dizisini oluÅŸturuyor
+                    en_kÄ±sayol[k] = referans + komsu_mesafe;                        //fonksiyona ilk gelen ÅŸehirden komÅŸusu olan diÄŸer ÅŸehirlerin maliyetini oluÅŸturuyor
                 }
             }
         }
-        return en_kısayol;
+        return en_kÄ±sayol;
     }
 
     static int faktoriyel(int sayi) {
@@ -150,11 +150,11 @@ public class ProLab2 {
             line = oku.readLine();
             while (line != null) {
                 bol = line.split(",");
-                sehir[i] = new sehirler(bol.length - 2);                          // Şehir adında yeni bir class oluşturduk ve oluşturduğumuz anda classın parametreli constructorına komsu sayısını attık
-                sehir[i].sehir_adi = bol[1];                                      // okuduğuz text şehrin adını classtaki şehrin adına yazdım
-                sehir[i].plaka_kodu = Integer.parseInt(bol[0]);                  // aynı şekilde plakasını da
+                sehir[i] = new sehirler(bol.length - 2);                          // Åehir adÄ±nda yeni bir class oluÅŸturduk ve oluÅŸturduÄŸumuz anda classÄ±n parametreli constructorÄ±na komsu sayÄ±sÄ±nÄ± attÄ±k
+                sehir[i].sehir_adi = bol[1];                                      // okuduÄŸuz text ÅŸehrin adÄ±nÄ± classtaki ÅŸehrin adÄ±na yazdÄ±m
+                sehir[i].plaka_kodu = Integer.parseInt(bol[0]);                  // aynÄ± ÅŸekilde plakasÄ±nÄ± da
                 for (int j = 2; j < bol.length; j++) {
-                    sehir[i].komsu[k] = bol[j];                                  // bu adımda ise atanan şehrin komşularının isimlerini tuttuk
+                    sehir[i].komsu[k] = bol[j];                                  // bu adÄ±mda ise atanan ÅŸehrin komÅŸularÄ±nÄ±n isimlerini tuttuk
                     k++;
                 }
                 k = 0;
@@ -173,7 +173,7 @@ public class ProLab2 {
             line = oku.readLine();
             while (line != null) {
                 bol = line.split(",");
-                for (i = 0; i < sehir[sayac].komsu.length; i++) {                 // for 81 şehir için tuttuğumuz komsu sayısına dönerek maliyetlerini şehir classındaki maliyetlerine atarak her şehir için özdeşleştirdik
+                for (i = 0; i < sehir[sayac].komsu.length; i++) {                 // for 81 ÅŸehir iÃ§in tuttuÄŸumuz komsu sayÄ±sÄ±na dÃ¶nerek maliyetlerini ÅŸehir classÄ±ndaki maliyetlerine atarak her ÅŸehir iÃ§in Ã¶zdeÅŸleÅŸtirdik
 
                     sehir[sayac].komsu_maliyet[i] = Integer.parseInt(bol[i + 1]);
 
@@ -188,14 +188,14 @@ public class ProLab2 {
 
         for (i = 0; i < 81; i++) {
             for (int l = 0; l < sehir[i].komsu.length; l++) {
-                temp = plaka_bul(sehir[i].komsu[l]);                              // bu adımda plaka_bul fonksiyonu yaparak komşu şehirlerin plakasını aldık
-                komsu_maliyet[i + 1][temp] = sehir[i].komsu_maliyet[l];          //aldığız plakaları komşu matris yaparak onlara atadım
+                temp = plaka_bul(sehir[i].komsu[l]);                              // bu adÄ±mda plaka_bul fonksiyonu yaparak komÅŸu ÅŸehirlerin plakasÄ±nÄ± aldÄ±k
+                komsu_maliyet[i + 1][temp] = sehir[i].komsu_maliyet[l];          //aldÄ±ÄŸÄ±z plakalarÄ± komÅŸu matris yaparak onlara atadÄ±m
             }
         }
         sayac = 0;
         Random r = new Random();
         Scanner scan = new Scanner(System.in);
-        System.out.println("kac adet sehir gireceksiniz(MAX 8 şehirde çalışır)");
+        System.out.println("kac adet sehir gireceksiniz(MAX 8 ÅŸehirde Ã§alÄ±ÅŸÄ±r)");
         int sehir_sayisi = scan.nextInt() + 1;
         int[] sehirler = new int[sehir_sayisi + 1];
         int[][] komsu_dizi = new int[sehir_sayisi + 1][82];
@@ -203,22 +203,22 @@ public class ProLab2 {
         int sayac1 = 0;
         int[] dizi = new int[82];
         int[][] maliyet = new int[sehir_sayisi + 1][82];
-        System.out.println("Sehirlerin plaka kodlarını giriniz(Kocaeli başlangıç şehir olarak belirlenmiştir.Girilmesine gerek yoktur):");
+        System.out.println("Sehirlerin plaka kodlarÄ±nÄ± giriniz(Kocaeli baÅŸlangÄ±Ã§ ÅŸehir olarak belirlenmiÅŸtir.Girilmesine gerek yoktur):");
         sehirler[1] = 41;
         for (i = 2; i <= sehir_sayisi; i++) {
             sehirler[i] = scan.nextInt();
         }
         System.out.println();
         for (int kl = 1; kl <= sehir_sayisi; kl++) {
-            en_kisayol = enkisa_yol(komsu_maliyet, sehirler[kl]);                        // enkisa_yol fonksiyona şehirleri göndererek onların hangi şehire komşu olduklarını dizi değişkene atayıp 3 alt satırda o dönen diziyi komsu_dizisine atıyoruz
+            en_kisayol = enkisa_yol(komsu_maliyet, sehirler[kl]);                        // enkisa_yol fonksiyona ÅŸehirleri gÃ¶ndererek onlarÄ±n hangi ÅŸehire komÅŸu olduklarÄ±nÄ± dizi deÄŸiÅŸkene atayÄ±p 3 alt satÄ±rda o dÃ¶nen diziyi komsu_dizisine atÄ±yoruz
 
-            dizi = maliyet(komsu_maliyet, sehirler[kl]);                         // maliyet fonksiyonnuna gönderilen şehirlerin diğer şehirlere olan mesafelerini tutuyor bir alt satırda da maliyet dizisine kopyalıyoruz
+            dizi = maliyet(komsu_maliyet, sehirler[kl]);                         // maliyet fonksiyonnuna gÃ¶nderilen ÅŸehirlerin diÄŸer ÅŸehirlere olan mesafelerini tutuyor bir alt satÄ±rda da maliyet dizisine kopyalÄ±yoruz
             System.arraycopy(dizi, 0, maliyet[kl], 0, 82);
             System.arraycopy(en_kisayol, 0, komsu_dizi[kl], 0, 82);
 
         }
         int j = 1;
-        Point[] point = new Point[sehir_sayisi + 1];                             // x ve y noktalarını tutacak bir point nesnesi tanımladık
+        Point[] point = new Point[sehir_sayisi + 1];                             // x ve y noktalarÄ±nÄ± tutacak bir point nesnesi tanÄ±mladÄ±k
         String rakamlar = "";
         int[] degisken = new int[faktoriyel(sehir_sayisi)];
         int[] gezilecek_sehir = new int[11];
@@ -240,59 +240,59 @@ public class ProLab2 {
         }
         for (i = abs; i < (int) Math.pow(10, sehir_sayisi - 1) * 2; i++) {
             String string = "";
-            string += i;                                                                                             // for da artan i değerini her seferinde string değişkenine ekliyoruz
+            string += i;                                                                                             // for da artan i deÄŸerini her seferinde string deÄŸiÅŸkenine ekliyoruz
             char[] sirala = string.toCharArray();
-            Arrays.sort(sirala);                                                                                   // diziye çevrilmiş olan String burda sıralıyoruz 15342 gibi sayıyı 12345 olarak sıralayıp aşağıda referans olarak verdiğim değerle karşılaştırıyoruz hepsi birbirinden farklı mı diye 
+            Arrays.sort(sirala);                                                                                   // diziye Ã§evrilmiÅŸ olan String burda sÄ±ralÄ±yoruz 15342 gibi sayÄ±yÄ± 12345 olarak sÄ±ralayÄ±p aÅŸaÄŸÄ±da referans olarak verdiÄŸim deÄŸerle karÅŸÄ±laÅŸtÄ±rÄ±yoruz hepsi birbirinden farklÄ± mÄ± diye 
             for (j = 1; j <= sehir_sayisi; j++) {
-                rakamlar += j;                                                                                     // bu kısımda kullanici kaç şehir girdi ise ona göre rakamları alıyoruz karşılaştırma yaparken referans olarak
-            }                                                                                                     //örnek veriyorum kullanıcı 5 tane şehir girecekse 12345 sayılarını alıyoruz
-            if (String.valueOf(sirala).equals(rakamlar)) {                                                        // karşılaştırma yapılıyor
+                rakamlar += j;                                                                                     // bu kÄ±sÄ±mda kullanici kaÃ§ ÅŸehir girdi ise ona gÃ¶re rakamlarÄ± alÄ±yoruz karÅŸÄ±laÅŸtÄ±rma yaparken referans olarak
+            }                                                                                                     //Ã¶rnek veriyorum kullanÄ±cÄ± 5 tane ÅŸehir girecekse 12345 sayÄ±larÄ±nÄ± alÄ±yoruz
+            if (String.valueOf(sirala).equals(rakamlar)) {                                                        // karÅŸÄ±laÅŸtÄ±rma yapÄ±lÄ±yor
                 sayi_tut = i;
                 while (0 < i) {
-                    gezilecek_sehir[sehir_syisi] = i % 10;                                                        // burda eğer şart sağlanır bütün sayılar birbinden farklı oluyorsa o sayıların modunu alarak gezilecek şehirlere aktarıyoruz
+                    gezilecek_sehir[sehir_syisi] = i % 10;                                                        // burda eÄŸer ÅŸart saÄŸlanÄ±r bÃ¼tÃ¼n sayÄ±lar birbinden farklÄ± oluyorsa o sayÄ±larÄ±n modunu alarak gezilecek ÅŸehirlere aktarÄ±yoruz
                     i = i / 10;
                     sehir_syisi--;
                 }
                 int sehir_plaka;
                 for (i = 1; i < sehir_sayisi; i++) {
-                    sehir_plaka = sehirler[gezilecek_sehir[i]];                                                  //kullanıcıdan aldığız şehirlerin plakalarını sehir_plaka değişkenine atıyoruz yukarı da kontrol işleminde doğru olanları yani 15234 şartı sağlıyorsa ilk önce 1 sonra 5 diye alıyoruz
+                    sehir_plaka = sehirler[gezilecek_sehir[i]];                                                  //kullanÄ±cÄ±dan aldÄ±ÄŸÄ±z ÅŸehirlerin plakalarÄ±nÄ± sehir_plaka deÄŸiÅŸkenine atÄ±yoruz yukarÄ± da kontrol iÅŸleminde doÄŸru olanlarÄ± yani 15234 ÅŸartÄ± saÄŸlÄ±yorsa ilk Ã¶nce 1 sonra 5 diye alÄ±yoruz
                     do {
 
                         if (sehir_plaka != -1) {
-                            array[dizi_indx].add(sehir_plaka);                                                   //eğer plaka -1 değil ise arraylist e atıyoruz ilk plakayı
+                            array[dizi_indx].add(sehir_plaka);                                                   //eÄŸer plaka -1 deÄŸil ise arraylist e atÄ±yoruz ilk plakayÄ±
                         }
 
-                        sehir_plaka = komsu_dizi[gezilecek_sehir[i + 1]][sehir_plaka];                           // yukarı da oluşturduğumuz komşu dizisinde gezilecek şehir i+1 diyerek olası kombinasyonlar da kocaelinden sonra hangi geliyorsa onu şehir plakasına atıyoruz örnek vermek gerekirse ilkten kocaelinden adanaya gidilecek o yolları arraylist e atıyorum
-                                                                                                                 //komsu_dizi[1][41]=54 eşit kocaelinin komşusu olduğu için ardından komsu_dizi[1][54]=14 gibi böyle devam ediyor komsu_dizi[1][1] olduğu vakit -1 dönüp çıkıyor 
+                        sehir_plaka = komsu_dizi[gezilecek_sehir[i + 1]][sehir_plaka];                           // yukarÄ± da oluÅŸturduÄŸumuz komÅŸu dizisinde gezilecek ÅŸehir i+1 diyerek olasÄ± kombinasyonlar da kocaelinden sonra hangi geliyorsa onu ÅŸehir plakasÄ±na atÄ±yoruz Ã¶rnek vermek gerekirse ilkten kocaelinden adanaya gidilecek o yollarÄ± arraylist e atÄ±yorum
+                                                                                                                 //komsu_dizi[1][41]=54 eÅŸit kocaelinin komÅŸusu olduÄŸu iÃ§in ardÄ±ndan komsu_dizi[1][54]=14 gibi bÃ¶yle devam ediyor komsu_dizi[1][1] olduÄŸu vakit -1 dÃ¶nÃ¼p Ã§Ä±kÄ±yor 
                     } while (sehir_plaka != -1);
-                    degisken[dizi_indx] += maliyet[gezilecek_sehir[i]][sehirler[gezilecek_sehir[i + 1]]];         //bu sırada da maliyetleri toplayıp bütün olası maliyetleri atıyorum değişken dizisine kullanıcı 5 şehir girdiyse 120 farklı maliyet barındırıyor
+                    degisken[dizi_indx] += maliyet[gezilecek_sehir[i]][sehirler[gezilecek_sehir[i + 1]]];         //bu sÄ±rada da maliyetleri toplayÄ±p bÃ¼tÃ¼n olasÄ± maliyetleri atÄ±yorum deÄŸiÅŸken dizisine kullanÄ±cÄ± 5 ÅŸehir girdiyse 120 farklÄ± maliyet barÄ±ndÄ±rÄ±yor
                 }
-                sehir_plaka = sehirler[gezilecek_sehir[i]];                                                       // gittiğim en son yerdeki plakayı alıyoruz ve sehir_plaka da tutuyoruz kocaelinden->adana->afyon gitti afyonun plakasını burda tutuyoruz
+                sehir_plaka = sehirler[gezilecek_sehir[i]];                                                       // gittiÄŸim en son yerdeki plakayÄ± alÄ±yoruz ve sehir_plaka da tutuyoruz kocaelinden->adana->afyon gitti afyonun plakasÄ±nÄ± burda tutuyoruz
                 do {
 
                     if (sehir_plaka != -1) {
                         array[dizi_indx].add(sehir_plaka);
                     }
-                    sehir_plaka = komsu_dizi[gezilecek_sehir[1]][sehir_plaka];                                   //burda örnek verdiğim o afyonun plakasını matrisin sütun kısmına yazıyoruz gezilecek şehir de kocaelini tuttuğu için en son ki birleştirme yani afyondan kocaeline olan yolu da bu kısımda yazıyor
+                    sehir_plaka = komsu_dizi[gezilecek_sehir[1]][sehir_plaka];                                   //burda Ã¶rnek verdiÄŸim o afyonun plakasÄ±nÄ± matrisin sÃ¼tun kÄ±smÄ±na yazÄ±yoruz gezilecek ÅŸehir de kocaelini tuttuÄŸu iÃ§in en son ki birleÅŸtirme yani afyondan kocaeline olan yolu da bu kÄ±sÄ±mda yazÄ±yor
 
                 } while (sehir_plaka != -1);
                 degisken[dizi_indx] += maliyet[gezilecek_sehir[i]][41];                   //son olarak afyondan kocaeline olan maliyete de ekliyoruz
                 dizi_indx++;
                 i = sayi_tut;
-            }                                                                             //değişkenler bir sonraki for için hazır olsun diye başlangıçtaki değerleri veriyoruz
+            }                                                                             //deÄŸiÅŸkenler bir sonraki for iÃ§in hazÄ±r olsun diye baÅŸlangÄ±Ã§taki deÄŸerleri veriyoruz
 
             rakamlar = "";
             sehir_syisi = sehir_sayisi;
         }
         File dosya_1 = new File("Output.txt");
         ArrayList<Integer> buffer = new ArrayList<Integer>();
-        for (i = 0; i < faktoriyel(sehir_sayisi - 1) - 1; i++) {                          //yukarıda almış olduğuz kullanıcı 5 tane şehir girdiyse o şehirlerin maliyetlerini küçükten büyüğe doğru sıralama işlemi yapıyoruz
+        for (i = 0; i < faktoriyel(sehir_sayisi - 1) - 1; i++) {                          //yukarÄ±da almÄ±ÅŸ olduÄŸuz kullanÄ±cÄ± 5 tane ÅŸehir girdiyse o ÅŸehirlerin maliyetlerini kÃ¼Ã§Ã¼kten bÃ¼yÃ¼ÄŸe doÄŸru sÄ±ralama iÅŸlemi yapÄ±yoruz
             for (j = i + 1; j < faktoriyel(sehir_sayisi - 1); j++) {
                 if (degisken[i] > degisken[j]) {
                     int tmp3 = degisken[i];
-                    degisken[i] = degisken[j];                                             //burada maliyetleri sıralarken
+                    degisken[i] = degisken[j];                                             //burada maliyetleri sÄ±ralarken
                     degisken[j] = tmp3;
-                    buffer = (ArrayList<Integer>) array[i];                               // bu kısımda ise yolları sıralıyor maliyetlerle aynı şekilde ilerlesin diye
+                    buffer = (ArrayList<Integer>) array[i];                               // bu kÄ±sÄ±mda ise yollarÄ± sÄ±ralÄ±yor maliyetlerle aynÄ± ÅŸekilde ilerlesin diye
                     array[i] = array[j];
                     array[j] = buffer;
                 }
@@ -301,20 +301,20 @@ public class ProLab2 {
         }
         long end = System.currentTimeMillis();
         long cikan_sonuc=end-start;
-        System.out.println("Algoritanın tamamlanma süresi: "+(double)cikan_sonuc/1000);
+        System.out.println("AlgoritanÄ±n tamamlanma sÃ¼resi: "+(double)cikan_sonuc/1000);
         System.out.println("\n\n");
-        Point[][] nokta = new Point[5][sehir_sayisi + 1];                                  //harita da çizeceğiz noktalar için yeni bir point nesnesi oluşturuyoruz
+        Point[][] nokta = new Point[5][sehir_sayisi + 1];                                  //harita da Ã§izeceÄŸiz noktalar iÃ§in yeni bir point nesnesi oluÅŸturuyoruz
         if (sehir_sayisi <= 2) {
             try {
                 FileWriter dosya_yaz = new FileWriter(dosya_1);
                 BufferedWriter writer = new BufferedWriter(dosya_yaz);
 
                 for (i = 0; i < 1; i++) {
-                    writer.write("(En Kısa Yol: ");
+                    writer.write("(En KÄ±sa Yol: ");
                     writer.write(String.valueOf(degisken[i]));
                     writer.write(")");
-                    System.out.print("(En Kısa Yol: " + degisken[i] + ")");
-                    for (j = 0; j < array[i].size(); j++) {                             //bu kısımda ise yazma işlemini hem dosyaya hemde ekrana yazdırıyorum maliyetleriyle birlikte
+                    System.out.print("(En KÄ±sa Yol: " + degisken[i] + ")");
+                    for (j = 0; j < array[i].size(); j++) {                             //bu kÄ±sÄ±mda ise yazma iÅŸlemini hem dosyaya hemde ekrana yazdÄ±rÄ±yorum maliyetleriyle birlikte
                         writer.write(String.valueOf(array[i].get(j)));
                         writer.write("  ");
                         System.out.print(" " + array[i].get(j));
@@ -324,7 +324,7 @@ public class ProLab2 {
                 }
                 writer.close();
             } catch (IOException e) {
-                System.out.println("Dosya yazma işlemi başarısız  " + e);
+                System.out.println("Dosya yazma iÅŸlemi baÅŸarÄ±sÄ±z  " + e);
             }
         } else if (sehir_sayisi == 3) {
             try {
@@ -332,11 +332,11 @@ public class ProLab2 {
                 BufferedWriter writer = new BufferedWriter(dosya_yaz);
 
                 for (i = 0; i < 2; i++) {
-                    writer.write("(En Kısa Yol: ");
+                    writer.write("(En KÄ±sa Yol: ");
                     writer.write(String.valueOf(degisken[i]));
                     writer.write(")");
-                    System.out.print("(En Kısa Yol: " + degisken[i] + ")");
-                    for (j = 0; j < array[i].size(); j++) {                             //bu kısımda ise yazma işlemini hem dosyaya hemde ekrana yazdırıyorum maliyetleriyle birlikte
+                    System.out.print("(En KÄ±sa Yol: " + degisken[i] + ")");
+                    for (j = 0; j < array[i].size(); j++) {                             //bu kÄ±sÄ±mda ise yazma iÅŸlemini hem dosyaya hemde ekrana yazdÄ±rÄ±yorum maliyetleriyle birlikte
                         writer.write(String.valueOf(array[i].get(j)));
                         writer.write("  ");
                         System.out.print(" " + array[i].get(j));
@@ -346,7 +346,7 @@ public class ProLab2 {
                 }
                 writer.close();
             } catch (IOException e) {
-                System.out.println("Dosya yazma işlemi başarısız  " + e);
+                System.out.println("Dosya yazma iÅŸlemi baÅŸarÄ±sÄ±z  " + e);
             }
         } else {
             try {
@@ -354,11 +354,11 @@ public class ProLab2 {
                 BufferedWriter writer = new BufferedWriter(dosya_yaz);
 
                 for (i = 0; i < 5; i++) {
-                    writer.write("(En Kısa Yol: ");
+                    writer.write("(En KÄ±sa Yol: ");
                     writer.write(String.valueOf(degisken[i]));
                     writer.write(")");
-                    System.out.print("(En Kısa Yol: " + degisken[i] + ")");
-                    for (j = 0; j < array[i].size(); j++) {                             //bu kısımda ise yazma işlemini hem dosyaya hemde ekrana yazdırıyorum maliyetleriyle birlikte
+                    System.out.print("(En KÄ±sa Yol: " + degisken[i] + ")");
+                    for (j = 0; j < array[i].size(); j++) {                             //bu kÄ±sÄ±mda ise yazma iÅŸlemini hem dosyaya hemde ekrana yazdÄ±rÄ±yorum maliyetleriyle birlikte
                         writer.write(String.valueOf(array[i].get(j)));
                         writer.write("  ");
                         System.out.print(" " + array[i].get(j));
@@ -368,7 +368,7 @@ public class ProLab2 {
                 }
                 writer.close();
             } catch (IOException e) {
-                System.out.println("Dosya yazma işlemi başarısız  " + e);
+                System.out.println("Dosya yazma iÅŸlemi baÅŸarÄ±sÄ±z  " + e);
             }
         }
 
@@ -378,10 +378,10 @@ public class ProLab2 {
 
                 nokta[i][0] = new Point(points[41].x, points[41].y);
                 for (j = 0; j < array[i].size() - 1; j++) {
-                    if (array[i].get(j) == array[i].get(j + 1)) //5 tane yol içinde dolaşıyorum bir şehire gelip o şehirden çıkarken plakasını 2 kere tekrar edene bakıyorum yani o şehre uğranmış mı diye referans alıyorum
+                    if (array[i].get(j) == array[i].get(j + 1)) //5 tane yol iÃ§inde dolaÅŸÄ±yorum bir ÅŸehire gelip o ÅŸehirden Ã§Ä±karken plakasÄ±nÄ± 2 kere tekrar edene bakÄ±yorum yani o ÅŸehre uÄŸranmÄ±ÅŸ mÄ± diye referans alÄ±yorum
                     {
                         sayi++;
-                        nokta[0][sayi] = new Point(points[array[i].get(j)].x, points[array[i].get(j)].y);          //eğer o şehre uğrandıysa kendim oluşturduğum koordinatlar txtden okuduğum koordinatları noktalar değişkenine atıyorum             
+                        nokta[0][sayi] = new Point(points[array[i].get(j)].x, points[array[i].get(j)].y);          //eÄŸer o ÅŸehre uÄŸrandÄ±ysa kendim oluÅŸturduÄŸum koordinatlar txtden okuduÄŸum koordinatlarÄ± noktalar deÄŸiÅŸkenine atÄ±yorum             
                     }
                 }
                 nokta[0][++sayi] = new Point(points[41].x, points[41].y);
@@ -403,11 +403,11 @@ public class ProLab2 {
             sayi = 0;
             nokta[0][0] = new Point(points[41].x, points[41].y);
             for (j = 0; j < array[0].size() - 1; j++) {
-                if (array[0].get(j) == array[0].get(j + 1)) //5 tane yol içinde dolaşıyorum bir şehire gelip o şehirden çıkarken plakasını 2 kere tekrar edene bakıyorum yani o şehre uğranmış mı diye referans alıyorum
+                if (array[0].get(j) == array[0].get(j + 1)) //5 tane yol iÃ§inde dolaÅŸÄ±yorum bir ÅŸehire gelip o ÅŸehirden Ã§Ä±karken plakasÄ±nÄ± 2 kere tekrar edene bakÄ±yorum yani o ÅŸehre uÄŸranmÄ±ÅŸ mÄ± diye referans alÄ±yorum
                 {
 
                     sayi++;
-                    nokta[0][sayi] = new Point(points[array[0].get(j)].x, points[array[0].get(j)].y);          //eğer o şehre uğrandıysa kendim oluşturduğum koordinatlar txtden okuduğum koordinatları noktalar değişkenine atıyorum
+                    nokta[0][sayi] = new Point(points[array[0].get(j)].x, points[array[0].get(j)].y);          //eÄŸer o ÅŸehre uÄŸrandÄ±ysa kendim oluÅŸturduÄŸum koordinatlar txtden okuduÄŸum koordinatlarÄ± noktalar deÄŸiÅŸkenine atÄ±yorum
 
                 }
             }
@@ -429,10 +429,10 @@ public class ProLab2 {
                 sayi = 0;
                 nokta[sayac][0] = new Point(points[41].x, points[41].y);
                 for (j = 0; j < array[i].size() - 1; j++) {
-                    if (array[i].get(j) == array[i].get(j + 1)) //5 tane yol içinde dolaşıyorum bir şehire gelip o şehirden çıkarken plakasını 2 kere tekrar edene bakıyorum yani o şehre uğranmış mı diye referans alıyorum
+                    if (array[i].get(j) == array[i].get(j + 1)) //5 tane yol iÃ§inde dolaÅŸÄ±yorum bir ÅŸehire gelip o ÅŸehirden Ã§Ä±karken plakasÄ±nÄ± 2 kere tekrar edene bakÄ±yorum yani o ÅŸehre uÄŸranmÄ±ÅŸ mÄ± diye referans alÄ±yorum
                     {
                         sayi++;
-                        nokta[sayac][sayi] = new Point(points[array[i].get(j)].x, points[array[i].get(j)].y);          //eğer o şehre uğrandıysa kendim oluşturduğum koordinatlar txtden okuduğum koordinatları noktalar değişkenine atıyorum
+                        nokta[sayac][sayi] = new Point(points[array[i].get(j)].x, points[array[i].get(j)].y);          //eÄŸer o ÅŸehre uÄŸrandÄ±ysa kendim oluÅŸturduÄŸum koordinatlar txtden okuduÄŸum koordinatlarÄ± noktalar deÄŸiÅŸkenine atÄ±yorum
 
                     }
                 }
@@ -458,7 +458,7 @@ public class ProLab2 {
 
 ------------------------------------------------------------------------
 
-//Harita.java Jframe oluşturulan class
+//Harita.java Jframe oluÅŸturulan class
 
 
 package prolab2;
@@ -564,7 +564,7 @@ public class Harita extends javax.swing.JFrame {
 
 ------------------------------------------------------------------------
 
-//sehirler.java sehirler classı
+//sehirler.java sehirler classÄ±
 package prolab2;
 
 
